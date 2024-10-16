@@ -1,0 +1,12 @@
+# Ignore all .log files
+*.log
+
+
+# Ignore all .DS_Store files (common on macOS)
+.DS_Store
+
+
+# ignore all the files in Lectures
+/Lectures/
+# Ignore all files with the .bak extension in any directory
+*.bak
