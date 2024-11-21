@@ -1,13 +1,3 @@
-
-% solve 1D poisson equation with Nuemann Boundary condition
-% with ghost grid point
-
-function A = poisson_nuemann_mat_1d(N)
-    e = ones(N, 1);  % Block of ones for the neighboring diagonal
-    A = spdiags([-e 2*e -e], -1:1, N, N);  % 1D Poisson matrix for each block
-    A(N, N) = 1;
-end
-
 a = -1;
 b = exp(2)*(cos(1) + 2*sin(1));
 
@@ -15,37 +5,8 @@ f = @(x) -exp(x.^2+1).*(4*x.*cos(x) + sin(x) + 4*x.^2.*sin(x));
 
 u = @(x) sin(x).*exp(x.^2+1) -1;
 
-
-function u_h = solve_poisson(a, b, N, f)
-    h = (1 - 0)/ N;
-    x = linspace(0, 1, N+1);
-    f_value = f(x(2:N+1))';
-    f_value(1, 1) = f_value(1, 1) + a/h^2;
-    f_value(end, 1) = f_value(end, 1)/2 + b/h;
-    A = (1/h^2) * poisson_nuemann_mat_1d(N);
-    u_h = A \ f_value;
-end
-
-function u_true = solve_u_true(N, u)
-    x = linspace(0, 1, N+1);
-    u_true = u(x(2:N+1))';
-end
-
-% u_h = solve_poisson(a, b, 100000, f);
-% u_true = solve_u_true(100000, u);
-% max(abs(u_h - u_true))
-
-
-% Display results in a table
-Ns = [10, 20, 40, 80, 160];
-fprintf('N\t\t||u_h - u||_∞\n');
-fprintf('----------------------------------\n');
-for idx = 1:length(Ns)
-    fprintf('%3d\t\t%.6f\n', Ns(idx), ...
-        max(abs(solve_poisson(a, b, Ns(idx), f) - solve_u_true(Ns(idx), u))));
-end
-
-
+% solve 1D poisson equation with Nuemann Boundary condition
+% with ghost grid point
 Ns = 10:10:3000;  % Calculate the inverse and convert to integers
 hs = 1 ./ Ns;
 errors = zeros(length(Ns));
@@ -86,4 +47,33 @@ title('Error convergence plot')
 
 
 saveas(gcf, 'error_loglog_symmetric.png')
+
+function A = poisson_nuemann_mat_1d(N)
+    e = ones(N, 1);  % Block of ones for the neighboring diagonal
+    A = spdiags([-e 2*e -e], -1:1, N, N);  % 1D Poisson matrix for each block
+    A(N, N) = 1;
+end
+
+
+
+function u_h = solve_poisson(a, b, N, f)
+    h = (1 - 0)/ N;
+    x = linspace(0, 1, N+1);
+    f_value = f(x(2:N+1))';
+    f_value(1, 1) = f_value(1, 1) + a/h^2;
+    f_value(end, 1) = f_value(end, 1)/2 + b/h;
+    A = (1/h^2) * poisson_nuemann_mat_1d(N);
+    u_h = A \ f_value;
+end
+
+function u_true = solve_u_true(N, u)
+    x = linspace(0, 1, N+1);
+    u_true = u(x(2:N+1))';
+end
+
+% u_h = solve_poisson(a, b, 100000, f);
+% u_true = solve_u_true(100000, u);
+% max(abs(u_h - u_true))
+
+
 
