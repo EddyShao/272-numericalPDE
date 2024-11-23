@@ -119,16 +119,3 @@ axis equal;
 colormap(jet); % Set color map for better contrast
 shading interp; % Smooth color transitions
 saveas(gcf, '3a_numerical_64.png');
-
-% generte a 3D plot
-figure;
-trisurf(element, node(:,1), node(:,2), U_h', 'EdgeColor', 'none');
-title('Numerical Solution $u_h$', 'Interpreter', 'latex');
-xlabel('$x$', 'Interpreter', 'latex');
-ylabel('$y$', 'Interpreter', 'latex');
-view(3); % Set view to 3D
-colorbar;
-axis equal;
-colormap(jet); % Set color map for better contrast
-shading interp; % Smooth color transitions
-saveas(gcf, '3a_numerical_64_3D.png');
