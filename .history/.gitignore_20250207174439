@@ -9,7 +9,5 @@
 # ignore all the files in Lectures
 /A/Lectures/
 /B/Lectures/
-/B/HW3/*.png
-/B/HW3/*.ipynb
 # Ignore all files with the .bak extension in any directory
 *.bak
